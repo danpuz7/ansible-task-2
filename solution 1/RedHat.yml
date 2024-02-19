@@ -1,0 +1,37 @@
+
+# Setenforce 0 
+- name: Disable SELinux
+  selinux:
+    state: disabled
+# Yum install httpd –y 
+- name: Install the latest version of Apache
+  ansible.builtin.yum:
+    name: httpd
+    state: latest
+# Systemctl start httpd 
+# Systemctl enable httpd
+- name: Start service httpd, if not started
+  ansible.builtin.service:
+    name: httpd
+    state: started
+    enabled: yes
+
+# Curl templatelink -o /destination/filename 
+- name: Download template link
+  ansible.builtin.get_url:
+    url: https://www.free-css.com/assets/files/free-css-templates/download/page296/spering.zip
+    dest: /tmp/spering.zip
+# Yum install unzip –y 
+- name: Install the latest version of Apache
+  ansible.builtin.yum:
+    name: unzip
+    state: latest
+# Unzip /src/filename -y 
+- name: Extract spering.zip into /var/www/html
+  ansible.builtin.unarchive:
+    src: /tmp/spering.zip
+    dest: /var/www/html
+    remote_src: yes
+# Mv /unzippedfolder/* /var/www/html 
+- name: Execute the command in remote shell; stdout goes to the specified file on the remote.
+  shell: mv /var/www/html/spering-html/* /var/www/html

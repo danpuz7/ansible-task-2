@@ -1,0 +1,33 @@
+- hosts: centos
+  tasks:
+#apt-get update #apt-get install apache2 -y
+  - name: Install apache httpd  (state=present is optional)
+    package:
+      name: "{{ package_name }}"
+      state: present
+    
+  #systemctl start httpd #systemctl enable httpd
+  - name: Start service httpd, if not started
+    ansible.builtin.service:
+      name: "{{ service_name }}"
+      state: started
+      enabled: yes
+  #curl templatelink -o /tmp/filename
+  - name: Download template link
+    ansible.builtin.get_url:
+      url: https://www.free-css.com/assets/files/free-css-templates/download/page296/spering.zip
+      dest: /tmp/spering.zip
+  #apt-get install unzip -y
+  - name: Install unzip
+    package:
+      name: unzip
+      state: present
+  #unzip /folder/filename
+  - name: Extract spering.zip into /var/www/html
+    ansible.builtin.unarchive:
+      src: /tmp/spering.zip
+      dest: /var/www/html
+      remote_src: yes
+  #mv unzipfolder/* /var/www/html
+  - name: Execute the command in remote shell; stdout goes to the specified file on the remote.
+    shell: mv /var/www/html/spering-html/* /var/www/html
